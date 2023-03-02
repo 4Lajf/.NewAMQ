@@ -1,47 +1,13 @@
 <script>
-	export let form;
 	import { enhance } from '$app/forms';
-	import { supabaseClient } from '$lib/supabase';
-
-	const signInWithProvider = async (provider) => {
-		const { data, error } = await supabaseClient.auth.signInWithOAuth({
-			provider: provider,
-		});
-	};
-
-	const submitSocialLogin = async ({ action, cancel }) => {
-		switch (action.searchParams.get('provider')) {
-			case 'github':
-				await signInWithProvider('github');
-				break;
-			default:
-				break;
-		}
-		cancel();
-	};
 </script>
 
 <main>
-	<h1>Login</h1>
-	{JSON.stringify(form)}
-	<form action="?/login" method="POST" class="auth-form" use:enhance>
-		<label for="email"> Email </label>
-		<input
-			type="text"
-			name="email"
-			class={form?.error ? 'border-red-500' : 'border-slate-500'} />
-		<label for="password"> Password </label>
-		<input
-			type="password"
-			name="password"
-			class={form?.error ? 'border-red-500' : 'border-slate-500'} />
-		{#if form?.error}
-			<span class="text-red-400">{form?.error}</span>
-		{/if}
-		<button type="submit" class="btn btn-primary">Login</button>
-	</form>
-	<form class="auth-form" method="POST" use:enhance={submitSocialLogin}>
-		<button formaction="?/login&provider=github" class="btn btn-primary">Github</button>
+	<h1>Create Room</h1>
+	<form action="?/create" method="POST" class="auth-form" use:enhance>
+		<label for="name"> Room Name </label>
+		<input type="text" name="name" />
+		<button type="submit" class="btn btn-primary">Create Room</button>
 	</form>
 </main>
 

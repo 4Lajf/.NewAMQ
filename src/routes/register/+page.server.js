@@ -1,4 +1,3 @@
-import { AuthApiError } from '@supabase/supabase-js';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 
