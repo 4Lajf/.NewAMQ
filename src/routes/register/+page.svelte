@@ -1,6 +1,6 @@
 <script>
-	import { enhance } from '$app/forms';
-	export let form;
+	import { enhance } from "$app/forms"
+	export let form
 </script>
 
 <main>
@@ -10,8 +10,11 @@
 		<input
 			type="text"
 			name="username"
-			value={form?.data?.username ?? ''}
-			class={form?.errors?.username ? 'border-red-500' : 'border-slate-500'} />
+			value={form?.data?.username ?? ""}
+			class={form?.errors?.username
+				? "border-red-500"
+				: "border-slate-500"}
+		/>
 		<label for="username">
 			{JSON.stringify(form?.data)}
 			{#if form?.errors?.username}
@@ -22,8 +25,9 @@
 		<input
 			type="text"
 			name="email"
-			value={form?.data?.email ?? ''}
-			class={form?.errors?.email ? 'border-red-500' : 'border-slate-500'} />
+			value={form?.data?.email ?? ""}
+			class={form?.errors?.email ? "border-red-500" : "border-slate-500"}
+		/>
 		<label for="email">
 			{#if form?.errors?.email}
 				<span class="text-red-400">{form?.errors?.email[0]}</span>
@@ -33,7 +37,10 @@
 		<input
 			type="password"
 			name="password"
-			class={form?.errors?.password ? 'border-red-500' : 'border-slate-500'} />
+			class={form?.errors?.password
+				? "border-red-500"
+				: "border-slate-500"}
+		/>
 		<label for="password">
 			{#if form?.errors?.password}
 				<span class="text-red-400">{form?.errors?.password[0]}</span>
@@ -43,10 +50,15 @@
 		<input
 			type="password"
 			name="confirmPassword"
-			class={form?.errors?.confirmPassword ? 'border-red-500' : 'border-slate-500'} />
+			class={form?.errors?.confirmPassword
+				? "border-red-500"
+				: "border-slate-500"}
+		/>
 		<label for="confirmPassword">
 			{#if form?.errors?.confirmPassword}
-				<span class="text-red-400">{form?.errors?.confirmPassword[0]}</span>
+				<span class="text-red-400"
+					>{form?.errors?.confirmPassword[0]}</span
+				>
 			{/if}
 			<button type="submit" class="btn btn-primary">Register</button>
 		</label>

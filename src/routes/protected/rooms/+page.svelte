@@ -1,5 +1,6 @@
 <script>
-	export let data;
+	export let data
+	console.log(data)
 </script>
 
 <main>
@@ -7,10 +8,16 @@
 		<div>
 			<h1>Rooms:</h1>
 			{#each data.rooms as room}
-				<!-- svelte-ignore a11y-missing-content -->
-				<a href="/protected/rooms/{room.id}">
-					<p>{room.name}</p>
-				</a>
+				{#if room.isDM === true}
+					<i>hidden</i>
+					<a href="/protected/rooms/{room.name}">
+						<p>{room.name}</p>
+					</a>
+				{:else}
+					<a href="/protected/rooms/{room.id}">
+						<p>{room.name}</p>
+					</a>
+				{/if}
 			{/each}
 		</div>
 	</div>

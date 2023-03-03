@@ -1,23 +1,28 @@
 <script>
-	import { enhance } from '$app/forms';
-	import { supabaseClient } from '$lib/supabase';
+	import { enhance } from "$app/forms"
+	import { supabaseClient } from "$lib/supabase"
 
-	export let data;
+	export let data
 
 	const submitLogut = async ({ cancel }) => {
-		const { error } = await supabaseClient.auth.signOut();
+		const { error } = await supabaseClient.auth.signOut()
 		if (error) {
-			console.log(error);
+			console.log(error)
 		}
-		cancel();
-	};
+		cancel()
+	}
 </script>
 
 <main>
 	<h1>SvelteKit & Supabase Auth</h1>
 	{#if data.session}
 		<p>Welcome, {data.session.user.email}</p>
-		<form action="/logout" method="POST" use:enhance={submitLogut} class="auth-form w-[20%]">
+		<form
+			action="/logout"
+			method="POST"
+			use:enhance={submitLogut}
+			class="auth-form w-[20%]"
+		>
 			<button type="submit" class="btn btn-primary">Logout</button>
 		</form>
 	{:else}

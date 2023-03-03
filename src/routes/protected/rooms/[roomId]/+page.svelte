@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from "$app/forms"
 	export let data
+	console.log(data.messages)
 
 	$: ({ messages } = data)
 
@@ -20,8 +21,17 @@
 			{/each}
 		</div>
 
-		<form action="?/createMessage" method="POST" use:enhance={submitNewMessage}>
-			<input type="text" name="message" id="message" placeholder="message" />
+		<form
+			action="?/createMessage"
+			method="POST"
+			use:enhance={submitNewMessage}
+		>
+			<input
+				type="text"
+				name="message"
+				id="message"
+				placeholder="message"
+			/>
 			<button type="submit">Send</button>
 		</form>
 	</div>

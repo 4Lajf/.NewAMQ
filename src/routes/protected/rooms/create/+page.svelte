@@ -1,5 +1,5 @@
 <script>
-	import { enhance } from '$app/forms';
+	import { enhance } from "$app/forms"
 </script>
 
 <main>
