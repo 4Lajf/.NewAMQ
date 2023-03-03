@@ -40,13 +40,27 @@ const registerSchema = z
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	register: async ({ request, locals }) => {
+	register: async ({ request, locals, url }) => {
 		const formData = Object.fromEntries(await request.formData())
+		const provider = url.searchParams.get("provider")
+
+		if (provider) {
+			const signInWithGithub = await locals.sb.auth.signInWithOAuth({
+				provider: provider,
+			})
+
+			if (signInWithGithub.error) {
+				console.log(signInWithGithub.error)
+				return fail(400, {
+					message: "Something went wrong, please try again later",
+				})
+			}
+
+			throw redirect(303, signInWithGithub.data.url)
+		}
 
 		try {
-			const result = registerSchema.parse(formData)
-			console.log("success")
-			console.log(result)
+			const registerData = registerSchema.parse(formData)
 		} catch (err) {
 			const { fieldErrors: errors } = err.flatten()
 			const { password, confirmPassword, ...rest } = formData
@@ -56,16 +70,50 @@ export const actions = {
 			}
 		}
 
-		const { data, error: err } = await locals.sb.auth.signUp({
+		const signUp = await locals.sb.auth.signUp({
 			email: formData.email,
 			password: formData.password,
 		})
 
-		if (err) {
+		if (signUp.error) {
+			console.log(signUp.error)
 			return fail(500, {
-				error: "There was a problem contacting the server. Please try again later",
+				message: "There was a problem contacting the server. Please try again later",
 			})
 		}
+
+		const setUsername = await locals.sb.auth.updateUser({
+			data: { username: formData.username },
+		})
+
+		if (setUsername.error) {
+			console.log(setUsername.error)
+			return fail(500, {
+				message: "There was a problem contacting the server. Please try again later",
+			})
+		}
+
+		const setProfileName = await locals.sb
+			.from("profiles")
+			.update({ username: formData.username })
+			.eq("id", signUp.data.user.id)
+
+		if (setProfileName.error) {
+			console.log(setProfileName.error)
+			return fail(500, {
+				message: "There was a problem contacting the server. Please try again later",
+			})
+		}
+
+		const refreshSession = await locals.sb.auth.refreshSession()
+		const { session, user } = refreshSession.data
+
+		if (logout.error) {
+			return fail(500, {
+				message: "There was a problem contacting the server. Please try again later",
+			})
+		}
+
 		throw redirect(303, "/")
 	},
 }

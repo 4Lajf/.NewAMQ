@@ -3,6 +3,7 @@
 	import { supabaseClient } from "$lib/supabase"
 	import { invalidateAll } from "$app/navigation"
 	import "../app.css"
+	export let data
 
 	onMount(() => {
 		const {
@@ -21,9 +22,19 @@
 	<a href="/protected" class="btn">Protected</a>
 	<a href="/protected/rooms" class="btn">Rooms</a>
 	<a href="/protected/rooms/create" class="btn">Create</a>
-	<form action="/logout" method="POST" class="auth-form container w-[20%]">
-		<button class="btn btn-primary">Logout</button>
-	</form>
+	{#if data.session?.user.user_metadata.username}
+		<p>Welcome {data.session.user.user_metadata.username}!</p>
+		<form action="/logout" method="POST" class="auth-form container w-[20%]">
+			<button class="btn btn-primary">Logout</button>
+		</form>
+	{:else if data.session?.user}
+		<p>Please complete your registration!</p>
+		<form action="/logout" method="POST" class="auth-form container w-[20%]">
+			<button class="btn btn-primary">Logout</button>
+		</form>
+	{:else}
+		<p>Please log-in!</p>
+	{/if}
 </div>
 
 <div class="h-full w-full">

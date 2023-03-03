@@ -1,17 +1,22 @@
 <script>
+	export let form
 	import { enhance } from "$app/forms"
-	import { supabaseClient } from "$lib/supabase"
-	import { redirect } from "@sveltejs/kit"
-	import { onMount } from "svelte"
 </script>
 
 <main>
-	<h1>SvelteKit & Supabase Auth</h1>
-	<p>Let's learn how to register and login users!</p>
-	<div class="auth-buttons">
-		<a href="/login" class="btn btn-primary">Login</a>
-		<a href="/register" class="btn btn-secondary">Register</a>
-	</div>
+	<h1>Complete Registration</h1>
+	<p>Submit your username to complete registration</p>
+	<form action="?/completeRegistration" method="POST" class="auth-form" use:enhance>
+		{#if form?.error.username}
+			<span class="text-red-400">{form?.error.username}</span>
+		{/if}
+		<label for="username"> Username </label>
+		<input
+			type="text"
+			name="username"
+			class={form?.error ? "border-red-500" : "border-slate-500"} />
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
 </main>
 
 <style lang="scss">
@@ -97,7 +102,6 @@
 
 	input {
 		background-color: $dark-100;
-		border: $gray 2px solid;
 		border-radius: 5px;
 		padding: 10px 20px;
 		color: #ffffff;

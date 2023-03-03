@@ -17,8 +17,13 @@ export const handle = async ({ event, resolve }) => {
                 throw redirect(303, '/protected')
             }
         } */
-	}
 
+		if (event.url.pathname.startsWith("/completeRegistration")) {
+			/* nothing */
+		} else if (session && !session.user.user_metadata.username) {
+			throw redirect(303, "/completeRegistration")
+		}
+	}
 	const reponse = await resolve(event)
 	return reponse
 }

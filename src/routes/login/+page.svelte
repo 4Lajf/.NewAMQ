@@ -23,29 +23,32 @@
 
 <main>
 	<h1>Login</h1>
-	{JSON.stringify(form)}
 	<form action="?/login" method="POST" class="auth-form" use:enhance>
+		{#if !form?.error.email && !form?.error.password && form?.error}
+			<span class="text-red-400">{form?.error}</span>
+		{/if}
+		{#if form?.error?.email}
+			<span class="text-red-400">{form?.error?.email[0]}</span>
+		{/if}
 		<label for="email"> Email </label>
 		<input
 			type="text"
 			name="email"
-			class={form?.error ? "border-red-500" : "border-slate-500"}
-		/>
+			value={form?.data?.email ?? ""}
+			class={form?.error ? "border-red-500" : "border-slate-500"} />
+		{#if form?.error?.password}
+			<span class="text-red-400">{form?.error?.password[0]}</span>
+		{/if}
 		<label for="password"> Password </label>
 		<input
 			type="password"
 			name="password"
-			class={form?.error ? "border-red-500" : "border-slate-500"}
-		/>
-		{#if form?.error}
-			<span class="text-red-400">{form?.error}</span>
-		{/if}
+			class={form?.error ? "border-red-500" : "border-slate-500"} />
 		<button type="submit" class="btn btn-primary">Login</button>
 	</form>
 	<form class="auth-form" method="POST" use:enhance={submitSocialLogin}>
 		<button formaction="?/login&provider=github" class="btn btn-primary"
-			>Github</button
-		>
+			>Github</button>
 	</form>
 </main>
 

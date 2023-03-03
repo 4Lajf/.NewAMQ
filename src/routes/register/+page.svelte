@@ -1,6 +1,24 @@
 <script>
-	import { enhance } from "$app/forms"
 	export let form
+	import { enhance } from "$app/forms"
+	import { supabaseClient } from "$lib/supabase"
+
+	const signInWithProvider = async (provider) => {
+		const signIn = await supabaseClient.auth.signInWithOAuth({
+			provider: provider,
+		})
+	}
+
+	const submitSocialLogin = async ({ action, cancel }) => {
+		switch (action.searchParams.get("provider")) {
+			case "github":
+				await signInWithProvider("github")
+				break
+			default:
+				break
+		}
+		cancel()
+	}
 </script>
 
 <main>
@@ -13,8 +31,7 @@
 			value={form?.data?.username ?? ""}
 			class={form?.errors?.username
 				? "border-red-500"
-				: "border-slate-500"}
-		/>
+				: "border-slate-500"} />
 		<label for="username">
 			{JSON.stringify(form?.data)}
 			{#if form?.errors?.username}
@@ -26,8 +43,9 @@
 			type="text"
 			name="email"
 			value={form?.data?.email ?? ""}
-			class={form?.errors?.email ? "border-red-500" : "border-slate-500"}
-		/>
+			class={form?.errors?.email
+				? "border-red-500"
+				: "border-slate-500"} />
 		<label for="email">
 			{#if form?.errors?.email}
 				<span class="text-red-400">{form?.errors?.email[0]}</span>
@@ -39,8 +57,7 @@
 			name="password"
 			class={form?.errors?.password
 				? "border-red-500"
-				: "border-slate-500"}
-		/>
+				: "border-slate-500"} />
 		<label for="password">
 			{#if form?.errors?.password}
 				<span class="text-red-400">{form?.errors?.password[0]}</span>
@@ -52,16 +69,18 @@
 			name="confirmPassword"
 			class={form?.errors?.confirmPassword
 				? "border-red-500"
-				: "border-slate-500"}
-		/>
+				: "border-slate-500"} />
 		<label for="confirmPassword">
 			{#if form?.errors?.confirmPassword}
 				<span class="text-red-400"
-					>{form?.errors?.confirmPassword[0]}</span
-				>
+					>{form?.errors?.confirmPassword[0]}</span>
 			{/if}
 			<button type="submit" class="btn btn-primary">Register</button>
 		</label>
+	</form>
+	<form class="auth-form" method="POST">
+		<button formaction="?/register&provider=github" class="btn btn-primary"
+			>Github</button>
 	</form>
 </main>
 
