@@ -10,7 +10,7 @@
 			{#each data.rooms as room}
 				{#if room.isDM === true}
 					<i>hidden</i>
-					<a href="/protected/rooms/{room.name}">
+					<a href="/protected/rooms/{room.id}">
 						<p>{room.name}</p>
 					</a>
 				{:else}

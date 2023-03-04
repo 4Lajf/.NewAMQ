@@ -6,7 +6,6 @@ import { fail } from "@sveltejs/kit"
 /** @type {import('./$types').Actions} */
 export const actions = {
 	sendMessage: async ({ request, locals }) => {
-		console.log(locals.sb)
 		const { message } = Object.fromEntries(await request.formData())
 
 		const channel = locals.sb.channel("room1")
@@ -47,10 +46,7 @@ export const actions = {
 			})
 		}
 
-		const roomMembersDelete = await supabaseServer
-			.from("room_members")
-			.delete()
-			.eq("user_id", user.id)
+		const roomMembersDelete = await supabaseServer.from("room_members").delete().eq("user_id", user.id)
 
 		if (roomMembersDelete.error) {
 			console.log(roomMembersDelete.error)
@@ -59,10 +55,7 @@ export const actions = {
 			})
 		}
 
-		const selectRooms = await supabaseServer
-			.from("rooms")
-			.select("*")
-			.eq("user_id", user.id)
+		const selectRooms = await supabaseServer.from("rooms").select("*").eq("user_id", user.id)
 		let roomsToDelete = []
 		selectRooms.data.forEach((el) => {
 			roomsToDelete.push(el.id)
@@ -76,10 +69,7 @@ export const actions = {
 		}
 
 		roomsToDelete.forEach(async (room_id) => {
-			const roomMessagesDelete = await supabaseServer
-				.from("room_messages")
-				.delete()
-				.eq("room_id", room_id)
+			const roomMessagesDelete = await supabaseServer.from("room_messages").delete().eq("room_id", room_id)
 
 			if (roomMessagesDelete.error) {
 				console.log(roomMessagesDelete.error)
@@ -89,10 +79,7 @@ export const actions = {
 			}
 		})
 
-		const deleteRooms = await supabaseServer
-			.from("rooms")
-			.delete()
-			.eq("user_id", user.id)
+		const deleteRooms = await supabaseServer.from("rooms").delete().eq("user_id", user.id)
 
 		if (deleteRooms.error) {
 			console.log(deleteRooms.error)
@@ -101,9 +88,7 @@ export const actions = {
 			})
 		}
 
-		const deleteAccount = await supabaseServer.auth.admin.deleteUser(
-			user.id
-		)
+		const deleteAccount = await supabaseServer.auth.admin.deleteUser(user.id)
 
 		if (deleteAccount.error) {
 			console.log(deleteAccount.error)

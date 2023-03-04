@@ -93,10 +93,7 @@ export const actions = {
 			})
 		}
 
-		const setProfileName = await locals.sb
-			.from("profiles")
-			.update({ username: formData.username })
-			.eq("id", signUp.data.user.id)
+		const setProfileName = await locals.sb.from("profiles").update({ username: formData.username }).eq("id", signUp.data.user.id)
 
 		if (setProfileName.error) {
 			console.log(setProfileName.error)
@@ -107,12 +104,6 @@ export const actions = {
 
 		const refreshSession = await locals.sb.auth.refreshSession()
 		const { session, user } = refreshSession.data
-
-		if (logout.error) {
-			return fail(500, {
-				message: "There was a problem contacting the server. Please try again later",
-			})
-		}
 
 		throw redirect(303, "/")
 	},

@@ -1,7 +1,7 @@
 <script>
 	import { enhance } from "$app/forms"
 	export let data
-	console.log(data.messages)
+	console.log("data: ", data.messages)
 
 	$: ({ messages } = data)
 </script>
@@ -11,7 +11,7 @@
 		<div>
 			<h1>Messages:</h1>
 			{#each messages as message}
-				<p>{message.messages.content}</p>
+				<p>{message}</p>
 			{/each}
 		</div>
 

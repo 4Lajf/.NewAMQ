@@ -4,7 +4,7 @@
 	"singleQuote": false,
 	"semi": false,
 	"svelteBracketNewLine": false,
-	"printWidth": 120,
+	"printWidth": 90,
 	"svelteAllowShorthand": false,
 	"svelteIndentScriptAndStyle": true,
 	"svelteSortOrder": "scripts-markup-options-styles"
